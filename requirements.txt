@@ -1,6 +1,0 @@
-matplotlib
-numpy
-pandas
-progress
-python-dateutil
-requests
