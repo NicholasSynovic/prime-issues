@@ -26,7 +26,7 @@ class Config:
         self.TRACKER: int
         match args.tracker:
             case "gh":
-                self.SCLC = 0
+                self.TRACKER = 0
                 self.LOGGER.info(msg=f"Using GitHub Issues as the Issue Tracker")
             case _:
                 exit(1)
