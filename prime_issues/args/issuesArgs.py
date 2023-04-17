@@ -24,7 +24,7 @@ def getArgs() -> Namespace:
         "-v",
         "--version",
         action="version",
-        version=f"{argVars.programName}: {version(distribution_name='prime-commits')}",
+        version=f"{argVars.programName}: {version(distribution_name='prime-issues')}",
     )
     parser.add_argument(
         "-a",
