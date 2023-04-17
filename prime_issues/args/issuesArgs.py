@@ -43,6 +43,14 @@ def getArgs() -> Namespace:
         dest="name",
     )
     parser.add_argument(
+        "-t",
+        "--token",
+        type=str,
+        required=True,
+        help="Authentication token",
+        dest="token",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         default=Path("commits.json").resolve(),
