@@ -15,6 +15,7 @@ class Config:
         self.LOG: Path = args.log.resolve()
         self.DF_LIST: List[DataFrame] = []
         self.LOGGER = Logger(name="PRIME Issues Collector", level=logging.INFO)
+        self.TOKEN = args.token
 
         logFileHandler: FileHandler = FileHandler(filename=self.LOG)
         logDateFormat: Formatter = Formatter(
