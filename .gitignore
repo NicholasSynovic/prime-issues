@@ -132,7 +132,10 @@ dmypy.json
 .vscode
 *.png
 *.pdf
-.idea
+
 !.zenodo.json
-.idea
-*.csv
+
+test/
+log.txt
+!prime_commits/utils/types/schema.json
+!.markdownlint.json
