@@ -166,18 +166,16 @@ outputIssuesSchemaStr: str = """{
                 "id": {
                     "type": "string"
                 },
-                "state": {
+                "State": {
                     "type": "string"
                 },
-                "createdAt": {
-                    "type": "string",
-                    "format": "date-time"
+                "CreatedAt": {
+                    "type": "integer"
                 },
-                "closedAt": {
+                "ClosedAt": {
                     "anyOf": [
                         {
-                            "type": "string",
-                            "format": "date-time"
+                            "type": "integer"
                         },
                         {
                             "type": "null"
@@ -186,10 +184,10 @@ outputIssuesSchemaStr: str = """{
                 }
             },
             "required": [
-                "closedAt",
-                "createdAt",
+                "ClosedAt",
+                "CreatedAt",
                 "id",
-                "state"
+                "State"
             ],
             "title": "OutputIssuesInformationValue"
         }
