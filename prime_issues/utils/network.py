@@ -1,10 +1,10 @@
-import requests
+from requests import Response, get, post
 
 
 def checkURL(url: str) -> bool:
-    response: int = requests.get(url=url).status_code
+    responseCode: int = get(url=url).status_code
 
-    match response:
+    match responseCode:
         case 404:
             return False
         case _:
@@ -12,4 +12,5 @@ def checkURL(url: str) -> bool:
 
 
 def postGraphQL(url: str, headers: dict[str, str], query: str) -> None:
-    pass
+    response: Response = post(url=url, headers=headers, data=query)
+    print(response.content)

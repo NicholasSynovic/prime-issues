@@ -14,16 +14,26 @@ def main(config: Config) -> None:
         "Authorization": "bearer " + config.TOKEN,
     }
 
-    query: str = """query {
-  repository(owner: "{}", name: "{}") {
-    issues(last: 100) {
+    query: str = """{
+    repository(owner: "{}", name: "{}") {
+    issues(first: 100) {
       nodes {
         id
         state
         createdAt
         closedAt
       }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
     }
+  }
+  rateLimit {
+    limit
+    cost
+    remaining
+    resetAt
   }
 }""".format(
         config.AUTHOR, config.REPO_NAME
