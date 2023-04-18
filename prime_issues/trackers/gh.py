@@ -1,10 +1,13 @@
+from typing import List
+
+import pandas
+from pandas import DataFrame
 from progress.bar import Bar
 
 from prime_issues import trackers
 from prime_issues.utils import network
 from prime_issues.utils.config import Config
-from typing import List
-from pandas import DataFrame
+
 
 def main(config: Config) -> None:
     githubURL: str = f"https://github.com/{config.AUTHOR}/{config.REPO_NAME}"
@@ -18,9 +21,9 @@ def main(config: Config) -> None:
         "Authorization": "bearer " + config.TOKEN,
     }
 
-    baseQuery: str = trackers.ghGraphQLQuery.replace("$AUTHOR", f'"{config.AUTHOR}"').replace(
-        "$REPO", f'"{config.REPO_NAME}"'
-    )
+    baseQuery: str = trackers.ghGraphQLQuery.replace(
+        "$AUTHOR", f'"{config.AUTHOR}"'
+    ).replace("$REPO", f'"{config.REPO_NAME}"')
 
     CURSOR: str = "null"
     MESSAGE: str = f"Getting issues from {githubURL}..."
@@ -29,7 +32,10 @@ def main(config: Config) -> None:
             query = baseQuery.replace("$CURSOR", CURSOR)
 
             response: dict | int = network.postGraphQL(
-                url="https://api.github.com/graphql", headers=headers, query=query, config=config
+                url="https://api.github.com/graphql",
+                headers=headers,
+                query=query,
+                config=config,
             )
 
             if type(response) is int:
@@ -40,7 +46,7 @@ def main(config: Config) -> None:
             remainingCalls: int = rateLimitData["remaining"]
             resetTime: str = rateLimitData["resetAt"]
 
-            issuesData:dict = response["data"]["repository"]["issues"]
+            issuesData: dict = response["data"]["repository"]["issues"]
             totalNumberOfCalls: int = round(issuesData["totalCount"] / 100)
 
             nodes: List[dict] = issuesData["nodes"]
@@ -59,3 +65,6 @@ def main(config: Config) -> None:
                 CURSOR = f'"{pageInfoData["endCursor"]}"'
             else:
                 break
+
+    df: DataFrame = pandas.concat(objs=config.DF_LIST, ignore_index=True)
+    df.T.to_json(path_or_buf=config.OUTPUT, indent=4)
