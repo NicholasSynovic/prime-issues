@@ -2,9 +2,9 @@ from json import loads
 
 schemaStr: str = """{
     "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/CommitInformation",
+    "$ref": "#/definitions/IssueInformation",
     "definitions": {
-        "CommitInformation": {
+        "IssueInformation": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -15,7 +15,7 @@ schemaStr: str = """{
             "required": [
                 "data"
             ],
-            "title": "CommitInformation"
+            "title": "IssueInformation"
         },
         "Data": {
             "type": "object",
