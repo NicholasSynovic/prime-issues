@@ -1,3 +1,4 @@
+from prime_issues import trackers
 from prime_issues.utils import network
 from prime_issues.utils.config import Config
 
@@ -14,31 +15,14 @@ def main(config: Config) -> None:
         "Authorization": "bearer " + config.TOKEN,
     }
 
-    query: str = """{
-    repository(owner: "{}", name: "{}") {
-    issues(first: 100) {
-      nodes {
-        id
-        state
-        createdAt
-        closedAt
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
-  }
-  rateLimit {
-    limit
-    cost
-    remaining
-    resetAt
-  }
-}""".format(
-        config.AUTHOR, config.REPO_NAME
-    )
-
-    response = network.postGraphQL(
+    response: dict | int = network.postGraphQL(
         url="https://api.github.com/graphql", headers=headers, query=query
     )
+
+    if type(response) is int:
+        config.LOGGER.info(msg=f"Error getting data. Code {response}")
+        exit(1)
+
+    import pprint
+
+    pprint.pprint(response)
