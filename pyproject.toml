@@ -84,6 +84,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
+prime-issues = "prime_issues.issues:main"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/SoftwareSystemsLaboratory/prime-issues/issues"

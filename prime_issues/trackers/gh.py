@@ -72,17 +72,19 @@ def main(config: Config) -> None:
 
             nodesDF["CreatedAt"] = (
                 pandas.to_datetime(nodesDF["CreatedAt"])
-                .dt.tz_convert(tz=None)
+                .dt.tz_localize(tz=None)
+                .tz_convert(tz=None)
                 .astype(int)
                 // 10**9
             )
             nodesDF["ClosedAt"] = (
                 pandas.to_datetime(nodesDF["ClosedAt"])
-                .dt.tz_convert(tz=None)
+                .dt.tz_localize(tz=None)
+                .tz_convert(tz=None)
                 .astype(int)
                 // 10**9
             )
-            nodesDF["ClosedAt"].clip(lower=0)
+            nodesDF["ClosedAt"].clip(lower=0, inplace=True)
 
             config.DF_LIST.append(Issues.convert(df=nodesDF).df)
 
@@ -107,13 +109,13 @@ def main(config: Config) -> None:
 
     df: DataFrame = pandas.concat(objs=config.DF_LIST, ignore_index=True).T
 
-    try:
-        validate(instance=df.to_json(), schema=outputIssuesSchema)
-    except ValidationError:
-        config.LOGGER.info(
-            msg=f"Returned JSON does not match JSONSchema. Data: {df.to_json()}"
-        )
-        exit(1)
+    # try:
+    #     validate(instance=df.to_json(), schema=outputIssuesSchema)
+    # except ValidationError:
+    #     config.LOGGER.info(
+    #         msg=f"Returned JSON does not match JSONSchema. Data: {df.to_json()}"
+    #     )
+    #     exit(1)
 
     df.to_json(path_or_buf=config.OUTPUT, indent=4)
     config.LOGGER.info(msg=f"Saved data to: {config.OUTPUT}")

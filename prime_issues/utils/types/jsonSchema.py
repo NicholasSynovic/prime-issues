@@ -173,21 +173,14 @@ outputIssuesSchemaStr: str = """{
                     "type": "integer"
                 },
                 "ClosedAt": {
-                    "anyOf": [
-                        {
-                            "type": "integer"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
+                        "type": "integer"
                 }
             },
             "required": [
-                "ClosedAt",
-                "CreatedAt",
                 "id",
-                "State"
+                "State",
+                "CreatedAt",
+                "ClosedAt"
             ],
             "title": "OutputIssuesInformationValue"
         }
