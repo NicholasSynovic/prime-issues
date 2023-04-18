@@ -76,6 +76,7 @@ pandas = "^2.0.0"
 requests = "^2.28.2"
 progress = "^1.6"
 jsonschema = "^4.17.3"
+typedframe = "^0.10.0"
 
 
 [build-system]
