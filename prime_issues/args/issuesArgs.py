@@ -53,7 +53,7 @@ def getArgs() -> Namespace:
     parser.add_argument(
         "-o",
         "--output",
-        default=Path("commits.json").resolve(),
+        default=Path("issues.json").resolve(),
         type=Path,
         required=False,
         help="Output file to store commit and SCLC data in JSON format",
@@ -62,7 +62,7 @@ def getArgs() -> Namespace:
     parser.add_argument(
         "-l",
         "--log",
-        default=Path("commits.log").resolve(),
+        default=Path("issues.log").resolve(),
         type=Path,
         required=False,
         help="File to store logging information",
