@@ -1,6 +1,7 @@
 import numpy
 from typedframe import TypedDataFrame
 
+
 class Issues(TypedDataFrame):
     schema: dict = {
         "id": str,

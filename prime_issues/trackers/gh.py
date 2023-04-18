@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 import pandas
@@ -9,9 +10,8 @@ from progress.bar import Bar
 from prime_issues import trackers
 from prime_issues.utils import network
 from prime_issues.utils.config import Config
-from prime_issues.utils.types.jsonSchema import outputIssuesSchema
 from prime_issues.utils.types.issues import Issues
-from datetime import datetime
+from prime_issues.utils.types.jsonSchema import outputIssuesSchema
 
 
 def main(config: Config) -> None:
@@ -61,10 +61,27 @@ def main(config: Config) -> None:
 
             nodes: List[dict] = issuesData["nodes"]
             nodesDF: DataFrame = DataFrame(data=nodes)
-            nodesDF.rename(columns={"createdAt": "CreatedAt", "closedAt": "ClosedAt", "state": "State"}, inplace=True)
+            nodesDF.rename(
+                columns={
+                    "createdAt": "CreatedAt",
+                    "closedAt": "ClosedAt",
+                    "state": "State",
+                },
+                inplace=True,
+            )
 
-            nodesDF["CreatedAt"] = pandas.to_datetime(nodesDF["CreatedAt"]).dt.tz_convert(tz=None).astype(int) // 10**9
-            nodesDF["ClosedAt"] = pandas.to_datetime(nodesDF["ClosedAt"]).dt.tz_convert(tz=None).astype(int) // 10**9
+            nodesDF["CreatedAt"] = (
+                pandas.to_datetime(nodesDF["CreatedAt"])
+                .dt.tz_convert(tz=None)
+                .astype(int)
+                // 10**9
+            )
+            nodesDF["ClosedAt"] = (
+                pandas.to_datetime(nodesDF["ClosedAt"])
+                .dt.tz_convert(tz=None)
+                .astype(int)
+                // 10**9
+            )
             nodesDF["ClosedAt"].clip(lower=0)
 
             config.DF_LIST.append(Issues.convert(df=nodesDF).df)
