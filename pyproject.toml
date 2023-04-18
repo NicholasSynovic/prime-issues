@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "PRIME - Commits Extractor"
 authors = ["Software and Systems Laboratory - Loyola University Chicago"]
 readme = "README.md"
-packages = [{include = "primne_issues"}]
+packages = [{include = "prime_issues"}]
 license = "BSD-3-Clause"
 homepage = "https://github.com/SoftwareSystemsLaboratory/prime-issues"
 repository = "https://github.com/SoftwareSystemsLaboratory/prime-issues"
