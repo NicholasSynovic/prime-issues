@@ -1,9 +1,11 @@
 from json import loads
 
-from requests import Response, get, post
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+from requests import Response, get, post
+
 from prime_issues.utils.config import Config
+from prime_issues.utils.types.jsonSchema import schema
 
 
 def checkURL(url: str) -> bool:
@@ -16,7 +18,9 @@ def checkURL(url: str) -> bool:
             return True
 
 
-def postGraphQL(url: str, headers: dict[str, str], query: str, config: Config) -> dict | int:
+def postGraphQL(
+    url: str, headers: dict[str, str], query: str, config: Config
+) -> dict | int:
     response: Response = post(url=url, headers=headers, json={"query": query})
 
     match response.status_code:
@@ -25,10 +29,13 @@ def postGraphQL(url: str, headers: dict[str, str], query: str, config: Config) -
         case 403:
             return 403
         case _:
+            json: dict = loads(s=response.content)
             try:
-                validate()
+                validate(instance=json, schema=schema)
             except ValidationError:
-                config.LOGGER.info(msg=f"Returned JSON does not match JSONSchema. Data: {response.content.decode()}")
+                config.LOGGER.info(
+                    msg=f"Returned JSON does not match JSONSchema. Data: {response.content.decode()}"
+                )
                 exit()
             else:
-                return loads(s=response.content)
+                return json
