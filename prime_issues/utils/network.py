@@ -5,7 +5,7 @@ from jsonschema.exceptions import ValidationError
 from requests import Response, get, post
 
 from prime_issues.utils.config import Config
-from prime_issues.utils.types.jsonSchema import schema
+from prime_issues.utils.types.jsonSchema import responseSchema
 
 
 def checkURL(url: str) -> bool:
@@ -31,7 +31,7 @@ def postGraphQL(
         case _:
             json: dict = loads(s=response.content)
             try:
-                validate(instance=json, schema=schema)
+                validate(instance=json, schema=responseSchema)
             except ValidationError:
                 config.LOGGER.info(
                     msg=f"Returned JSON does not match JSONSchema. Data: {response.content.decode()}"

@@ -1,6 +1,6 @@
 from json import loads
 
-schemaStr: str = """{
+responseSchemaStr: str = """{
     "$schema": "http://json-schema.org/draft-06/schema#",
     "$ref": "#/definitions/IssueInformation",
     "definitions": {
@@ -152,4 +152,50 @@ schemaStr: str = """{
 }
 """
 
-schema: dict = loads(s=schemaStr)
+outputIssuesSchemaStr: str = """{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "additionalProperties": {
+        "$ref": "#/definitions/OutputIssuesInformationValue"
+    },
+    "definitions": {
+        "OutputIssuesInformationValue": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "closedAt": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "closedAt",
+                "createdAt",
+                "id",
+                "state"
+            ],
+            "title": "OutputIssuesInformationValue"
+        }
+    }
+}
+"""
+
+responseSchema: dict = loads(s=responseSchemaStr)
+outputIssuesSchema: dict = loads(s=outputIssuesSchemaStr)
