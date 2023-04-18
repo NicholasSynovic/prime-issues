@@ -1,12 +1,15 @@
 from typing import List
 
 import pandas
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError
 from pandas import DataFrame
 from progress.bar import Bar
 
 from prime_issues import trackers
 from prime_issues.utils import network
 from prime_issues.utils.config import Config
+from prime_issues.utils.types.jsonSchema import outputIssuesSchema
 
 
 def main(config: Config) -> None:
@@ -77,5 +80,15 @@ def main(config: Config) -> None:
             else:
                 break
 
-    df: DataFrame = pandas.concat(objs=config.DF_LIST, ignore_index=True)
-    df.T.to_json(path_or_buf=config.OUTPUT, indent=4)
+    df: DataFrame = pandas.concat(objs=config.DF_LIST, ignore_index=True).T
+
+    try:
+        validate(instance=df.to_json(), schema=outputIssuesSchema)
+    except ValidationError:
+        config.LOGGER.info(
+            msg=f"Returned JSON does not match JSONSchema. Data: {df.to_json()}"
+        )
+        exit(1)
+
+    df.to_json(path_or_buf=config.OUTPUT, indent=4)
+    config.LOGGER.info(msg=f"Saved data to: {config.OUTPUT}")
